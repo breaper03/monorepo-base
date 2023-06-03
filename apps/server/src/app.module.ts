@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-
+import { UsersModule } from './users/users.module';
+import { MongooseModule } from '@nestjs/mongoose/dist/mongoose.module';
 @Module({
-  imports: [ServeStaticModule.forRoot({
-    rootPath: join(__dirname, '../../', 'client/dist') 
-  })],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    MongooseModule.forRoot('mongodb+srv://breaper03:G1br32l*-@cluster0.heeux3z.mongodb.net/money-manager-app'),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../../', 'client/dist') 
+    }), 
+    UsersModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

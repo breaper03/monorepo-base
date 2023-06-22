@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const users_schema_1 = require("../Schema/users.schema");
-let UsersService = class UsersService {
+let UsersService = exports.UsersService = class UsersService {
     constructor(usersModel) {
         this.usersModel = usersModel;
     }
@@ -41,10 +41,9 @@ let UsersService = class UsersService {
         return this.usersModel.findByIdAndUpdate(_id, user);
     }
 };
-UsersService = __decorate([
+exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)(users_schema_1.Users.name)),
     __metadata("design:paramtypes", [mongoose_2.Model])
 ], UsersService);
-exports.UsersService = UsersService;
 //# sourceMappingURL=users.service.js.map

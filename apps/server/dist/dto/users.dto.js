@@ -13,6 +13,7 @@ exports.updateUserDto = exports.createUserDto = void 0;
 const class_validator_1 = require("@nestjs/class-validator");
 class createUserDto {
 }
+exports.createUserDto = createUserDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
@@ -27,9 +28,14 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], createUserDto.prototype, "signed", void 0);
-exports.createUserDto = createUserDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], createUserDto.prototype, "token", void 0);
 class updateUserDto {
 }
+exports.updateUserDto = updateUserDto;
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),
@@ -46,5 +52,9 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], updateUserDto.prototype, "signed", void 0);
-exports.updateUserDto = updateUserDto;
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], updateUserDto.prototype, "token", void 0);
 //# sourceMappingURL=users.dto.js.map

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createContext, useEffect, useState } from 'react'
-import { User } from '../../interfaces/user.interface'
+import { CurrentUser, User } from '../../interfaces/user.interface'
 import React from 'react'
 import { getAllUsers, addUser, logInUser, logOutUser } from '../../api/user'
 
@@ -25,19 +25,30 @@ interface Props {
 }
 
 export const UserProvider: React.FC<Props> = ({children}) => {
+  let LogInOut = false
   const [usersList, setUsersList] = useState<User[]>([])
-  const [currentUser, setCurrentUser] = useState<User>({
+  const [currentUser, setCurrentUser] = useState<CurrentUser>({
     name: '',
-    password: ''
+    password: '',
+    token: ''
   })
 
   useEffect(() => {
     getAllUsers()
-        .then(data => setUsersList([...data]))
+        .then(data => {
+          setUsersList([...data])
+          getCurrent(data)
+        });
   }, [])
 
+  useEffect(() => {
+    getAllUsers()
+        .then(data => {
+          getCurrent(data)
+        });
+  }, [LogInOut])
+
   const createUser = async (user: User) => {
-    console.log(user)
     const res = await addUser(user)
     const data: User = await res.json()
     setUsersList([...usersList, data])
@@ -46,16 +57,32 @@ export const UserProvider: React.FC<Props> = ({children}) => {
   const userLogIn = async (user: User) => {
     const res = await logInUser(user)
     const data = await res.json()
-    setCurrentUser(data)
+    const users = await getAllUsers()
+    const { token } = users.find((res: User) => res.name === user.name)
+
+    localStorage.setItem('token', token)
+    setCurrentUser({...data})
+    LogInOut = true
   }
 
   const userLogOut = async (user: User) => {
-    console.log(user)
-    await logOutUser(user).then(() => {
-      setCurrentUser({name: "", password: "", signed: ""})
-    })
-    console.log('currentUser', currentUser)
-  } 
+    await logOutUser(user)
+    setCurrentUser({name: "", password: "", signed: "", token: ""})
+    localStorage.removeItem('token')
+    LogInOut = false
+  }
+
+  const getCurrent = (data: User[]) => {
+    const token = localStorage.getItem('token')
+    const users = data
+
+    if (token !== null) {
+      const current = users.find((user: User) => user.token === token)
+      current ? setCurrentUser(current) : setCurrentUser({name: "", password: "", signed: "", token: ""})
+    } else {
+      setCurrentUser({name: "", password: "", signed: "", token: ""})
+    }
+  }
 
   return (
     <UserContext.Provider value={{usersList, currentUser, createUser, userLogIn, userLogOut}}>

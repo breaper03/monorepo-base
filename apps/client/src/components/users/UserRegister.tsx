@@ -1,5 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { useUser } from "../../context/users/useUser"
+import { Header } from "../header/Header"
+import { redirect } from "react-router-dom"
 
 export const UserRegister = () => {
   const {usersList, currentUser, createUser} = useUser()
@@ -14,7 +16,6 @@ export const UserRegister = () => {
 
   
 
-  console.log(usersList)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const obj = {...newUser, [e.target.name]: e.target.value}
@@ -24,18 +25,18 @@ export const UserRegister = () => {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (usersList.find(user => user.password === newUser.password)) {
-      setError({message:'Datos incorrectos ...', error: true})
-    } if (!usersList.find(user => user.name == newUser.name)) {
-      setError({message:'Datos incorrectos ...', error: true})
+    if (usersList.find(user => user.name == newUser.name)) {
+      setError({message:'El usuario ya existe ...', error: true})
     } else {
       createUser(newUser)
-      setError({message: 'Inicio de sesion correcto', error: false})
+      redirect('/')
+      setError({message: 'Se creo la cuenta correctamente ...', error: false})
     }
 }
 
   return (
     <>
+      <Header />
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-800 h-[93.2vh]">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -106,7 +107,7 @@ export const UserRegister = () => {
           <p className="mt-10 text-center text-sm text-gray-500">
             Ya eres miembro?{' '}
             <a href="/user-login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-              Inicia Sesion ...
+              Crear cuenta ...
             </a>
           </p>
         </div>

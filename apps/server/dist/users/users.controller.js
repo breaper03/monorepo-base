@@ -18,7 +18,7 @@ const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
 const swagger_1 = require("@nestjs/swagger");
 const users_dto_1 = require("../dto/users.dto");
-let UsersController = UsersController_1 = class UsersController {
+let UsersController = exports.UsersController = UsersController_1 = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
         this.logger = new common_1.Logger(UsersController_1.name);
@@ -53,11 +53,11 @@ let UsersController = UsersController_1 = class UsersController {
     }
     async login(ip, user) {
         this.logger.log(`El ip del usuario es (${ip}).`);
-        const obj = { name: user.name, password: user.password, signed: ip };
+        const { name, password, _id } = (await this.getUsers()).find(res => res.name === user.name);
+        const obj = { name: name, password: password, signed: ip, token: (_id + Math.random().toString()) };
         const auth = [(await this.getUsers()).some(res => res.name == obj.name), (await this.getUsers()).some(res => res.password == obj.password)];
         if (auth[0] === true && auth[1] === true) {
-            const currentUser = (await this.getUsers()).find(res => res.name === obj.name);
-            const userAuth = await this.usersService.logInOut(currentUser._id, currentUser);
+            const userAuth = await this.usersService.logInOut(_id, obj);
             return userAuth;
         }
         else {
@@ -131,10 +131,9 @@ __decorate([
     __metadata("design:paramtypes", [users_dto_1.updateUserDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "logOut", null);
-UsersController = UsersController_1 = __decorate([
+exports.UsersController = UsersController = UsersController_1 = __decorate([
     (0, common_1.Controller)('users'),
     (0, swagger_1.ApiTags)('Users'),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
-exports.UsersController = UsersController;
 //# sourceMappingURL=users.controller.js.map

@@ -1,8 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from "react"
 import { useUser } from "../../context/users/useUser"
+import { Header } from "../header/Header"
+import { redirect } from "react-router-dom"
 
 export const UserLogin = () => {
-  const {usersList, currentUser, userLogIn} = useUser()
+  const {usersList, userLogIn} = useUser()
   const [newUser, setNewUser] = useState({
     name: "",
     password: ""
@@ -14,7 +16,6 @@ export const UserLogin = () => {
 
   
 
-  console.log(usersList)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const obj = {...newUser, [e.target.name]: e.target.value}
@@ -28,13 +29,14 @@ export const UserLogin = () => {
     } if (!usersList.find(user => user.name == newUser.name)) {
       setError({message:'Datos incorrectos ...', error: true})
     } else {
-      userLogIn(newUser)
+      userLogIn(newUser).then(() => redirect('/'))
       setError({message: 'Inicio de sesion correcto', error: false})
     }
 }
 
   return (
     <>
+      <Header />
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-800 h-[93.2vh]">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img

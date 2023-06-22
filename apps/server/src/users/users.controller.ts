@@ -58,13 +58,13 @@ export class UsersController {
   async login(@Ip() ip: string, @Body() user: updateUserDto) {
     this.logger.log(`El ip del usuario es (${ip}).`)
 
-    const obj = {name: user.name, password: user.password, signed: ip};
+    const {name, password, _id} = (await this.getUsers()).find(res => res.name === user.name)
+    const obj = {name: name, password: password, signed: ip, token: (_id + Math.random().toString())};
 
     const auth = [(await this.getUsers()).some(res => res.name == obj.name), (await this.getUsers()).some(res => res.password == obj.password)]
 
     if(auth[0] === true && auth[1] === true) {
-      const currentUser = (await this.getUsers()).find(res => res.name === obj.name)
-      const userAuth = await this.usersService.logInOut(currentUser._id, currentUser);
+      const userAuth = await this.usersService.logInOut(_id, obj);
       return userAuth
     } else {
       throw new NotFoundException('User Not Found')

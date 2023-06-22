@@ -12,6 +12,9 @@ export class Users {
 
     @Prop({default: ''})
     signed?: string;
+
+    @Prop({default: ''})
+    token?: string;
 }
 
 export const UsersSchema = SchemaFactory.createForClass(Users)

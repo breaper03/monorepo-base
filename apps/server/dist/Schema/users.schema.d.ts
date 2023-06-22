@@ -27,6 +27,7 @@ export declare class Users {
     name: string;
     password: string;
     signed?: string;
+    token?: string;
 }
 export declare const UsersSchema: import("mongoose").Schema<Users, import("mongoose").Model<Users, any, any, any, import("mongoose").Document<unknown, any, Users> & Omit<Users & {
     _id: import("mongoose").Types.ObjectId;

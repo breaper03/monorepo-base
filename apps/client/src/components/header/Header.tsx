@@ -1,10 +1,9 @@
-import { useState } from "react";
 import { useUser } from "../../context/users/useUser"
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 export const Header = () => {
-  const {currentUser} = useUser()
+  const {currentUser, userLogOut} = useUser()
 
   const navigation = [
     { name: 'Dashboard', href: '/', current: true },
@@ -79,8 +78,9 @@ export const Header = () => {
                     <div>
                       <Menu.Button className="flex rounded-full justify-center p-0.5 items-center bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                         <span className="sr-only">Open user menu</span>
-                        {
-                          !currentUser.name
+                        { 
+
+                          currentUser.name === ''
                             ? (
                               ''
                             )
@@ -132,6 +132,7 @@ export const Header = () => {
                               <a
                                 href="/"
                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                onClick={() => userLogOut(currentUser)}
                               >
                                 Sign out
                               </a> 

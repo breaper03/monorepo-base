@@ -10,6 +10,10 @@ export class createUserDto {
     @IsString()
     @IsOptional()
     signed?: string
+
+    @IsString()
+    @IsOptional()
+    token?: string
 }
 
 export class updateUserDto {
@@ -25,4 +29,8 @@ export class updateUserDto {
     @IsString()
     @IsOptional()
     signed?: string
+
+    @IsString()
+    @IsOptional()
+    token?: string
 }

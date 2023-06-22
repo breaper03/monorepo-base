@@ -12,20 +12,20 @@ const serve_static_1 = require("@nestjs/serve-static");
 const path_1 = require("path");
 const users_module_1 = require("./users/users.module");
 const mongoose_module_1 = require("@nestjs/mongoose/dist/mongoose.module");
-let AppModule = class AppModule {
+const tasks_module_1 = require("./tasks/tasks.module");
+let AppModule = exports.AppModule = class AppModule {
 };
-AppModule = __decorate([
+exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             mongoose_module_1.MongooseModule.forRoot('mongodb+srv://breaper03:G1br32l*-@cluster0.heeux3z.mongodb.net/money-manager-app'),
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: (0, path_1.join)(__dirname, '../../', 'client/dist')
             }),
-            users_module_1.UsersModule
+            users_module_1.UsersModule, tasks_module_1.TasksModule
         ],
         controllers: [],
         providers: [],
     })
 ], AppModule);
-exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

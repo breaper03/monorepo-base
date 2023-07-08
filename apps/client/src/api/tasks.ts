@@ -1,6 +1,6 @@
 import { Task } from "../interfaces/tasks.interface";
 
-const API = `http://localhost:3000/tasks`
+const API = `http://localhost:9999/tasks`
 export const getAllTask = async () => {
     const res = await fetch(API)
     const data = await res.json()
@@ -16,3 +16,13 @@ export const addTask = async (task: Task) =>
       'Content-Type': 'application/json'
     }
   })
+
+export const editTask = async (task: Task, id: string) => 
+  await fetch(`${API}/update/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(task),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+

@@ -9,6 +9,7 @@ import { Dashboard } from './components/dashboard/Dashboard'
 import { UserRegister } from './components/users/UserRegister'
 import { UserProvider } from './context/users/userContext'
 import { TasksProvider } from './context/tasks/tasksContext'
+import { Header } from './components/header/Header'
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <UserProvider>
       <TasksProvider>
+        <Header />
         <RouterProvider router={router} /> 
       </TasksProvider>
     </UserProvider>

@@ -1,7 +1,7 @@
 import { User } from "../interfaces/user.interface"
 
 
-const API = `http://localhost:3000/users`
+const API = `http://localhost:9999/users`
 
 export const addUser = (user: User) => 
     fetch(`${API}/create`, {

@@ -1,7 +1,7 @@
 import { useUser } from "../../context/users/useUser"
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { HiBell } from "react-icons/hi";
+import { FaSignInAlt, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
+import { Tooltip } from "@mui/material";
 export const Header = () => {
   const {currentUser, userLogOut} = useUser()
 
@@ -11,171 +11,71 @@ export const Header = () => {
     { name: 'Calendar', href: '/calendar', current: false },
   ]
 
-  function classNames(...classes: any) {
-    return classes.filter(Boolean).join(' ')
-  }
-
   return (
-    <div className="bg-gray-800">
-      <Disclosure as="nav" className="bg-gray-950 rounded-b-xl">
-        {({ open }) => (
-          <>
-            <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-              <div className="relative flex h-16 items-center justify-between">
-                <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                  {/* Mobile menu button*/}
-                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                    <span className="sr-only">Open main menu</span>
-                    {open ? (
-                      <HiBell className="block h-6 w-6" aria-hidden="true" />
-                    ) : (
-                      <HiBell className="block h-6 w-6" aria-hidden="true" />
-                    )}
-                  </Disclosure.Button>
-                </div>
-                <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                  <div className="flex flex-shrink-0 items-center">
-                    <img
-                      className="block h-8 w-auto lg:hidden"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
-                    <img
-                      className="hidden h-8 w-auto lg:block"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
-                  </div>
-                  <div className="hidden sm:ml-6 sm:block">
-                    <div className="flex space-x-4">
-                      {navigation.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className={classNames(
-                            item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                            'rounded-md px-3 py-2 text-sm font-medium'
-                          )}
-                          aria-current={item.current ? 'page' : undefined}
-                        >
-                          {item.name}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <button
-                    type="button"
-                    className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+    <>
+      <div className="w-full px-8 py-5 bg-[#1f2937] flex flex-wrap items-center justify-around">
+        {/* left */}
+        <div className="px-3 py-2 rounded-lg">
+          <h2 className="text-slate-200 font-semibold text-2xl"><span className="text-indigo-300">M</span>oney<span className="text-indigo-300">M</span>anager</h2>
+        </div>
+        {/* center */}
+        <div className="flex flex-wrap items-center justify-around text-[1em] list-none">
+          {
+            navigation.map((nav) => (
+              <div className="mx-2">
+                <a href={nav.href} className="px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-500 rounded-md">{nav.name}</a>
+              </div>
+            ))
+          }
+        </div>
+        {/* right */}
+        <div className="flex flex-wrap items-center justify-between"> {/* DropDown */}
+          <button 
+            onClick={() => alert('notifications')} 
+            className="text-white border-2 border-white rounded-3xl p-2 mx-2"
+          >
+            <HiBell />
+          </button>
+          {
+            currentUser.name
+              ? (
+                <>
+                  <button 
+                    className="text-[1em] text-slate-400"
                   >
-                    <span className="sr-only">View notifications</span>
-                    <HiBell className="h-6 w-6" aria-hidden="true" />
+                    <div className="bg-slate-600 rounded-3xl flex flex-wrap items-center p-1">
+                      <span className="mx-2">{currentUser.name}</span>
+                      <div className="text-[2em] text-white">
+                        <FaUserCircle />
+                      </div>
+                    </div>
                   </button>
-
-                  {/* Profile dropdown */}
-                  <Menu as="div" className="relative ml-3">
-                    <div>
-                      <Menu.Button className="flex rounded-full justify-center p-0.5 items-center bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <span className="sr-only">Open user menu</span>
-                        { 
-
-                          currentUser.name === ''
-                            ? (
-                              ''
-                            )
-                            : (
-                              <span className="text-gray-400 hover:text-white text-base m-2 transition-transform">{currentUser.name}</span>
-                            )
-                        }
-                        <img
-                          className="h-8 w-8 rounded-full m-1"
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
-                      </Menu.Button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
+                  <Tooltip title="Sign Out">
+                    <button 
+                      onClick={() => userLogOut(currentUser)} 
+                      className="text-white border-2 border-white rounded-3xl p-2 mx-2"
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href={`/profile`}
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                            >
-                              Your Profile
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                            >
-                              Settings
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            currentUser.name !== ""
-                            ? (
-                              <a
-                                href="/"
-                                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                onClick={() => userLogOut(currentUser)}
-                              >
-                                Sign out
-                              </a> 
-                            )
-                            : (
-                              <a
-                                href="/user-login"
-                                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                              >
-                                Log In
-                              </a> 
-                            )                   
-                          )}
-                        </Menu.Item>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-                </div>
-              </div>
-            </div>
-
-            <Disclosure.Panel className="sm:hidden">
-              <div className="space-y-1 px-2 pb-3 pt-2">
-                {navigation.map((item) => (
-                  <Disclosure.Button
-                    key={item.name}
-                    as="a"
-                    href={item.href}
-                    className={classNames(
-                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                      'block rounded-md px-3 py-2 text-base font-medium'
-                    )}
-                    aria-current={item.current ? 'page' : undefined}
+                      <FaSignOutAlt />
+                    </button>
+                  </Tooltip>
+                </>
+              ) : (
+                <>
+                  <button 
+                    className="text-[1em] text-slate-400"
                   >
-                    {item.name}
-                  </Disclosure.Button>
-                ))}
-              </div>
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-    </div>
-
+                    <a href="/user-login" className="bg-slate-600 rounded-3xl flex flex-wrap items-center p-1">
+                      <span className="mx-2">Login</span>
+                      <div className="text-[1em] text-slate-400 bg-slate-100 p-2 rounded-3xl">
+                        <FaSignInAlt />
+                      </div>
+                    </a>
+                  </button>
+                </>
+              )
+          }
+        </div>
+      </div>
+    </>
   )
 }

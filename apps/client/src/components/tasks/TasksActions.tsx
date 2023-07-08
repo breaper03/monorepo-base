@@ -2,7 +2,6 @@ import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, D
 import { useState } from "react"
 import { MdModeEditOutline, MdOutlineDelete } from "react-icons/md"
 import { useTasks } from "../../context/tasks/useTasks"
-import { Transition } from "@headlessui/react"
 export const TasksActions = ({params}) => {
 
   const [loading, setLoading] = useState(false)

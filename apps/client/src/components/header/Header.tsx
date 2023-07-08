@@ -1,7 +1,7 @@
 import { useUser } from "../../context/users/useUser"
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { HiBell } from "react-icons/hi";
 export const Header = () => {
   const {currentUser, userLogOut} = useUser()
 
@@ -26,11 +26,11 @@ export const Header = () => {
                   {/* Mobile menu button*/}
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                     <span className="sr-only">Open main menu</span>
-                    {open ? (
+                    {/* {open ? (
                       <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                     ) : (
                       <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                    )}
+                    )} */}
                   </Disclosure.Button>
                 </div>
                 <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
@@ -70,7 +70,7 @@ export const Header = () => {
                     className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                   >
                     <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    <HiBell className="h-6 w-6" aria-hidden="true" />
                   </button>
 
                   {/* Profile dropdown */}

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { createContext, useEffect, useState } from "react";
-import { CurrentTask, Task } from "../../interfaces/tasks.interface";
+import { Task } from "../../interfaces/tasks.interface";
 import { addTask, getAllTask, editTask } from "../../api/tasks";
-import { useUser } from "../users/useUser";
 
 interface TaskContextValue {
   tasksList: Task[],
@@ -12,8 +13,8 @@ interface TaskContextValue {
 
 export const TasksContext = createContext<TaskContextValue>({
   tasksList: [],
-  createTask: async (userId: string, task: Task) => {},
-  updateTask: async (task: Task, id: string) => {}
+  createTask: async (_userId: string, _task: Task) => {},
+  updateTask: async (_task: Task, _id: string) => {}
 })
 
 interface Props {
@@ -22,17 +23,16 @@ interface Props {
 
 export const TasksProvider: React.FC<Props> = ({children}) => {
   
-  const {currentUser} = useUser()
   const [tasksList, setTasksList] = useState<Task[]>([])
-  const [currentTask, setCurrentTask] = useState<CurrentTask>({
-    _id: '', 
-    name: '',
-    description: '',
-    type: '',
-    place: '',
-    price: 0,
-    userId: ''
-  })
+  // const [currentTask, setCurrentTask] = useState<CurrentTask>({
+  //   _id: '', 
+  //   name: '',
+  //   description: '',
+  //   type: '',
+  //   place: '',
+  //   price: 0,
+  //   userId: ''
+  // })
 
   useEffect(() => {
     getAllTask()

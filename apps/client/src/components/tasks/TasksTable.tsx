@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useTasks } from "../../context/tasks/useTasks";
-import { Box, Grid, Typography, grid2Classes, gridClasses } from '@mui/material'
-import { DataGrid, GridRow } from '@mui/x-data-grid'
+import { Box, Typography } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
 import { TasksActions } from './TasksActions.tsx'
 
 export const TaskTable = () => {
@@ -10,7 +10,6 @@ export const TaskTable = () => {
 
   const [pageSize, setPageSize] = useState(5)
   const [page, setPage] = useState(0)
-  const [rowId, setRowId] = useState('')
 
   const columns = useMemo(() => [
     {field: 'name', headerName: 'Nombre', width: 150},
@@ -19,7 +18,7 @@ export const TaskTable = () => {
     {field: 'place', headerName: 'Tienda', width: 150},
     {field: 'price', headerName: 'Precio', width: 150},
     {field: 'actions', headerName: 'Acciones', type: 'actions', renderCell: (params: any) => <TasksActions {...{params}} />},
-  ], [rowId])
+  ], [])
 
   const rows = tasksList;
   console.log(rows)

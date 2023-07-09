@@ -1,18 +1,14 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material"
 import { useState } from "react"
 import { MdModeEditOutline, MdOutlineDelete } from "react-icons/md"
-import { useTasks } from "../../context/tasks/useTasks"
-export const TasksActions = ({params}) => {
+export const TasksActions = ({params}: any) => {
 
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
   const [open, setOpen] = useState(false)
-  const [close, setClose] = useState(false)
   
-  const {updateTask} = useTasks()
 
   const handleEdit = () => {
     const obj = params.row;
+    console.log(obj)
     setOpen(true)
     // updateTask(obj, obj._id)
   }

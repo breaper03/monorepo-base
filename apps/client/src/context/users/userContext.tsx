@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createContext, useEffect, useState } from 'react'
 import { CurrentUser, User } from '../../interfaces/user.interface'
@@ -15,9 +16,9 @@ interface UserContexValue {
 export const UserContext = createContext<UserContexValue>({
   usersList: [],
   currentUser: {name: "", password: "", signed: ""},
-  createUser: async (user) => {},
-  userLogIn: async (user) => {},
-  userLogOut: async (user) => {}
+  createUser: async (_user) => {},
+  userLogIn: async (_user) => {},
+  userLogOut: async (_user) => {}
 })
 
 interface Props {

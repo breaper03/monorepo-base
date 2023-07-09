@@ -1,6 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react"
 import { useUser } from "../../context/users/useUser"
-import { Header } from "../header/Header"
 import { redirect } from "react-router-dom"
 
 export const UserLogin = () => {

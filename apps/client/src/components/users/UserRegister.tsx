@@ -1,10 +1,9 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
 import { useUser } from "../../context/users/useUser"
-import { Header } from "../header/Header"
 import { redirect } from "react-router-dom"
 
 export const UserRegister = () => {
-  const {usersList, currentUser, createUser} = useUser()
+  const {usersList, createUser} = useUser()
   const [newUser, setNewUser] = useState({
     name: "",
     password: ""
@@ -36,7 +35,6 @@ export const UserRegister = () => {
 
   return (
     <>
-      <Header />
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-800 h-[93.2vh]">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
@@ -107,7 +105,7 @@ export const UserRegister = () => {
           <p className="mt-10 text-center text-sm text-gray-500">
             Ya eres miembro?{' '}
             <a href="/user-login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-              Crear cuenta ...
+              Inicia Sesion ...
             </a>
           </p>
         </div>

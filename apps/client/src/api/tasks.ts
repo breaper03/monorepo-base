@@ -26,3 +26,11 @@ export const editTask = async (task: Task, id: string) =>
     }
   })
 
+export const deleteTask = async (id: string) => 
+  await fetch(`${API}/delete/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+

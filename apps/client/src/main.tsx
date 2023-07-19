@@ -10,6 +10,7 @@ import { UserRegister } from './components/users/UserRegister'
 import { UserProvider } from './context/users/userContext'
 import { TasksProvider } from './context/tasks/tasksContext'
 import { Header } from './components/header/Header'
+import { ThemeProvider } from '@material-tailwind/react'
 
 const router = createBrowserRouter([
   {
@@ -32,11 +33,13 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <UserProvider>
-      <TasksProvider>
-        <Header />
-        <RouterProvider router={router} /> 
-      </TasksProvider>
-    </UserProvider>
+    <ThemeProvider>
+      <UserProvider>
+        <TasksProvider>
+          <Header />
+          <RouterProvider router={router} /> 
+        </TasksProvider>
+      </UserProvider>
+    </ThemeProvider>
   </React.StrictMode>
 )

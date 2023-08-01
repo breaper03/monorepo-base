@@ -5,10 +5,22 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 })
 export class Users {
     @Prop({trim: true, unique: true, required: true})
-    name: string;
+    userName: string;
 
     @Prop({trim: true, required: true})
     password: string;
+
+    @Prop({trim: true, required: true})
+    email: string;
+    
+    @Prop({trim: true, required: true})
+    phone: string;
+
+    @Prop({trim: true, required: true})
+    name: string;
+
+    @Prop({trim: true, required: true})
+    lastname: string;
 
     @Prop({default: ''})
     signed?: string;

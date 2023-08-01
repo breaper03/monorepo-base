@@ -1,4 +1,4 @@
-import { User } from "../interfaces/user.interface"
+import { User } from "../components/common/interfaces/user.interface"
 
 
 const API = `http://localhost:9999/users`

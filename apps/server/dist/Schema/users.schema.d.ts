@@ -24,8 +24,12 @@
 /// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 export declare class Users {
-    name: string;
+    userName: string;
     password: string;
+    email: string;
+    phone: string;
+    name: string;
+    lastname: string;
     signed?: string;
     token?: string;
 }

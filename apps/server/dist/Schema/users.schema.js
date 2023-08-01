@@ -16,11 +16,27 @@ let Users = exports.Users = class Users {
 __decorate([
     (0, mongoose_1.Prop)({ trim: true, unique: true, required: true }),
     __metadata("design:type", String)
-], Users.prototype, "name", void 0);
+], Users.prototype, "userName", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ trim: true, required: true }),
     __metadata("design:type", String)
 ], Users.prototype, "password", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ trim: true, required: true }),
+    __metadata("design:type", String)
+], Users.prototype, "email", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ trim: true, required: true }),
+    __metadata("design:type", String)
+], Users.prototype, "phone", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ trim: true, required: true }),
+    __metadata("design:type", String)
+], Users.prototype, "name", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ trim: true, required: true }),
+    __metadata("design:type", String)
+], Users.prototype, "lastname", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ default: '' }),
     __metadata("design:type", String)

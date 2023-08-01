@@ -1,12 +1,16 @@
 import { ChangeEvent, FormEvent, useState } from "react"
 import { useUser } from "../../context/users/useUser"
 import { redirect } from "react-router-dom"
-
 export const UserLogin = () => {
   const {usersList, userLogIn} = useUser()
   const [newUser, setNewUser] = useState({
-    name: "",
-    password: ""
+    userName: '',
+    password: '',
+    name: '',
+    lastname: '',
+    email: '',
+    phone: '',
+    token: ''
   })
   const [Error, setError] = useState({
     message: '',
@@ -25,7 +29,7 @@ export const UserLogin = () => {
     e.preventDefault();
     if (usersList.find(user => user.password === newUser.password)) {
       setError({message:'Datos incorrectos ...', error: true})
-    } if (!usersList.find(user => user.name == newUser.name)) {
+    } if (!usersList.find(user => user.userName == newUser.userName)) {
       setError({message:'Datos incorrectos ...', error: true})
     } else {
       userLogIn(newUser).then(() => redirect('/'))
@@ -61,7 +65,7 @@ export const UserLogin = () => {
                 <input
                   onChange={handleChange}
                   id="name"
-                  name="name"
+                  name="userName"
                   type="text"
                   autoComplete="text"
                   required

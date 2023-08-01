@@ -27,8 +27,10 @@ export declare class Tasks {
     name: string;
     description: string;
     type: string;
-    place: string;
     price?: number;
+    currency: string;
+    dateFrom: Date;
+    dateTo: Date;
     userId: string;
 }
 export declare const TasksSchema: import("mongoose").Schema<Tasks, import("mongoose").Model<Tasks, any, any, any, import("mongoose").Document<unknown, any, Tasks> & Omit<Tasks & {

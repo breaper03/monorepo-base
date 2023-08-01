@@ -53,9 +53,9 @@ let UsersController = exports.UsersController = UsersController_1 = class UsersC
     }
     async login(ip, user) {
         this.logger.log(`El ip del usuario es (${ip}).`);
-        const { name, password, _id } = (await this.getUsers()).find(res => res.name === user.name);
-        const obj = { name: name, password: password, signed: ip, token: (_id + Math.random().toString()) };
-        const auth = [(await this.getUsers()).some(res => res.name == obj.name), (await this.getUsers()).some(res => res.password == obj.password)];
+        const { userName, password, _id } = (await this.getUsers()).find(res => res.userName === user.userName);
+        const obj = { userName: userName, password: password, signed: ip, token: (_id + Math.random().toString()) };
+        const auth = [(await this.getUsers()).some(res => res.userName == obj.userName), (await this.getUsers()).some(res => res.password == obj.password)];
         if (auth[0] === true && auth[1] === true) {
             const userAuth = await this.usersService.logInOut(_id, obj);
             return userAuth;

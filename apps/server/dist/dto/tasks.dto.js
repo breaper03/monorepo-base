@@ -39,11 +39,20 @@ __decorate([
 ], CreateTaskDto.prototype, "price", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.MinLength)(3),
     (0, swagger_1.ApiProperty)({ type: String }),
     __metadata("design:type", String)
-], CreateTaskDto.prototype, "place", void 0);
+], CreateTaskDto.prototype, "currency", void 0);
+__decorate([
+    (0, class_validator_1.IsDate)(),
+    (0, swagger_1.ApiProperty)({ type: Date }),
+    __metadata("design:type", Date)
+], CreateTaskDto.prototype, "dateFrom", void 0);
+__decorate([
+    (0, class_validator_1.IsDate)(),
+    (0, swagger_1.ApiProperty)({ type: Date }),
+    __metadata("design:type", Date)
+], CreateTaskDto.prototype, "dateTo", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, swagger_1.ApiProperty)({ type: String }),
@@ -79,11 +88,20 @@ __decorate([
 ], UpdateTaskDto.prototype, "price", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.MinLength)(3),
     (0, swagger_1.ApiProperty)({ type: String }),
     __metadata("design:type", String)
-], UpdateTaskDto.prototype, "place", void 0);
+], UpdateTaskDto.prototype, "currency", void 0);
+__decorate([
+    (0, class_validator_1.IsDate)(),
+    (0, swagger_1.ApiProperty)({ type: Date }),
+    __metadata("design:type", Date)
+], UpdateTaskDto.prototype, "dateFrom", void 0);
+__decorate([
+    (0, class_validator_1.IsDate)(),
+    (0, swagger_1.ApiProperty)({ type: Date }),
+    __metadata("design:type", Date)
+], UpdateTaskDto.prototype, "dateTo", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsOptional)(),

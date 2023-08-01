@@ -13,6 +13,7 @@ const path_1 = require("path");
 const users_module_1 = require("./users/users.module");
 const mongoose_module_1 = require("@nestjs/mongoose/dist/mongoose.module");
 const tasks_module_1 = require("./tasks/tasks.module");
+const operations_module_1 = require("./operations/operations.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -22,7 +23,7 @@ exports.AppModule = AppModule = __decorate([
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: (0, path_1.join)(__dirname, '../../', 'client/dist')
             }),
-            users_module_1.UsersModule, tasks_module_1.TasksModule
+            users_module_1.UsersModule, tasks_module_1.TasksModule, operations_module_1.OperationsModule
         ],
         controllers: [],
         providers: [],

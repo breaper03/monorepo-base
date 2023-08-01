@@ -13,10 +13,16 @@ export class Tasks {
     type: string;
 
     @Prop({trim: true, required: true})
-    place: string;
+    price?: number;
 
     @Prop({trim: true, required: true})
-    price?: number;
+    currency: string;
+
+    @Prop({trim: true, required: true})
+    dateFrom: Date;
+    
+    @Prop({trim: true, required: true})
+    dateTo: Date;
 
     @Prop({trim: true, required: true})
     userId: string;

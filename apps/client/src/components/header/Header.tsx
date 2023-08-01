@@ -22,7 +22,7 @@ export const Header = () => {
         <div className="flex flex-wrap items-center justify-around text-[1em] list-none">
           {
             navigation.map((nav) => (
-              <div className="mx-2">
+              <div className="mx-2" key={Math.random()}>
                 <a href={nav.href} className="px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-500 rounded-md">{nav.name}</a>
               </div>
             ))
@@ -39,16 +39,18 @@ export const Header = () => {
           {
             currentUser.name
               ? (
-                <>
+                <div className="flex flex-wrap justify-around items-center" >
                   <button 
                     className="text-[1em] text-slate-400"
                   >
-                    <div className="bg-slate-600 rounded-3xl flex flex-wrap items-center p-1">
-                      <span className="mx-2">{currentUser.name}</span>
-                      <div className="text-[2em] text-white">
-                        <FaUserCircle />
-                      </div>
-                    </div>
+                    <Tooltip title="My Account">
+                      <a href="/user-profile" className="bg-slate-600 rounded-3xl flex flex-wrap items-center p-1">
+                        <span className="mx-2">{currentUser.name}</span>
+                        <div className="text-[2em] text-white">
+                          <FaUserCircle />
+                        </div>
+                      </a>
+                    </Tooltip>
                   </button>
                   <Tooltip title="Sign Out">
                     <button 
@@ -58,7 +60,10 @@ export const Header = () => {
                       <FaSignOutAlt />
                     </button>
                   </Tooltip>
-                </>
+                  <div className="text-white" >
+
+                  </div>
+                </div>
               ) : (
                 <>
                   <button 

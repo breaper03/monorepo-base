@@ -3,7 +3,9 @@ export declare class CreateTaskDto {
     description: string;
     type: string;
     price: number;
-    place?: string;
+    currency: string;
+    dateFrom: Date;
+    dateTo: Date;
     userId: string;
 }
 export declare class UpdateTaskDto {
@@ -11,6 +13,8 @@ export declare class UpdateTaskDto {
     description?: string;
     type: string;
     price?: number;
-    place?: string;
+    currency?: string;
+    dateFrom?: Date;
+    dateTo?: Date;
     userId?: string;
 }

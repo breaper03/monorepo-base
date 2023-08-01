@@ -1,99 +1,423 @@
 import { useMemo, useState } from "react";
 import { useTasks } from "../../context/tasks/useTasks";
-import { MdModeEditOutline, MdOutlineDelete } from "react-icons/md"
-import { TaskActions } from "./actions/TasksActions";
+import { MdOutlineBlock, MdOutlineDelete } from "react-icons/md"
+import { TasksUpdate } from "./actions/TasksUpdate";
+import { TaskAdd } from "./actions/TaskAdd";
+import { TransactionTypeEnum } from "../../enums/TransactionTypeEnum";
+import "./style.css"
+import moment from "moment";
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import MuiAccordion, {AccordionProps} from '@mui/material/Accordion';
+import MuiAccordionSummary, {AccordionSummaryProps} from '@mui/material/AccordionSummary';
+import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import { styled } from "@mui/material";
 
+const Accordion = styled((props : AccordionProps) => (<MuiAccordion disableGutters elevation={0} square TransitionProps={{ unmountOnExit: true }} {...props}/>))(({theme}) => ({
+  // border: `2px solid #6366F1`,
+  margin: 5,
+  backgroundColor: "transparent",
+  color: "white",
+  borderRadius: "1em",
+  '&:not(:last-child)': {
+    // borderBottom: 0
+  },
+  '&:before': {
+    display: 'none',
+  }
+}));
+
+const AccordionSummary = styled((props : AccordionSummaryProps) => (
+    <MuiAccordionSummary
+      expandIcon={< ArrowForwardIosSharpIcon sx = {{ color: "#fafafa", fontSize: '0.9rem' }}/>}
+      {...props}/>
+  )) (({theme}) => ({
+    color: "#fafafa",
+    flexDirection: 'row-reverse',
+    borderRadius: "1em",  
+    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+      color: "#fafafa",
+      transform: 'rotate(90deg)'
+
+    },
+    '& .MuiAccordionSummary-content': {
+      color: "#fafafa",
+      marginLeft: theme.spacing(1)
+    },
+    '&:hover': {
+      backgroundColor: "#3f4d5f",
+    }
+  }));
+
+const AccordionDetails = styled(MuiAccordionDetails)(({theme}) => ({
+    padding: theme.spacing(1),
+    color: "#fafafa",
+    // borderTop: '2px solid #8284FF',
+}));
 export const TaskTable = () => {
 
-  const { tasksList, removeTask} = useTasks()
-
-  const [openModal, setOpenModal] = useState(false)
+  const { getUserTask, removeTask } = useTasks()
 
   const columns = useMemo(() => [
-    {field: 'name', headerName: 'Nombre', width: 150},
-    {field: 'description', headerName: 'Descripcion', width: 150},
-    {field: 'type', headerName: 'Tipo', width: 150},
-    {field: 'place', headerName: 'Tienda', width: 150},
-    {field: 'price', headerName: 'Precio', width: 150},
-    {field: 'actions', headerName: 'Acciones', width: 150},
+    {field: 'name', headerName: 'Nombre'},
+    {field: 'type', headerName: 'Tipo'},
+    {field: 'price', headerName: 'Precio'},
+    {field: 'ganancia', headerName: 'Descripcion'},
+    {field: 'start - end', headerName: 'Moneda'},
+    {field: 'actions', headerName: 'Acciones'},
   ], [])
 
-  const rows = tasksList;
+  const [expanded, setExpanded] = useState<string | false>('panel0');
+
+  const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+    setExpanded(newExpanded ? panel : false);
+  };
+
+  const rows = getUserTask();
+
+  const investment = rows.filter((el) => el.type === TransactionTypeEnum[0])
+  const deposit = rows.filter((el) => el.type === TransactionTypeEnum[1])
+  const withdrawal = rows.filter((el) => el.type === TransactionTypeEnum[2])
 
   return ( 
     <>
-      <div className="w-[800px] mx-auto mt-10">
-
+      <div className="w-[770px] mx-auto mt-10">
         <div className="flex flex-wrap px-4 py-3 w-full items-center justify-between text-white">
           <div className="font-semibold">
             <h1>Transactions:</h1>
           </div>
-          <button className="bg-indigo-500 px-4 py-2 rounded-lg text-sm">add transaction</button>
+          <TaskAdd />
         </div>
-        <div className="relative overflow-x-auto shadow-2xl sm:rounded-lg mx-auto">
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-slate-700 dark:text-gray-400">
-                <tr>
-                    {
-                      columns.map((col) => (
-                        <th scope="col" className="px-6 py-3">
-                          {col.field}
-                        </th>
-                      ))
-                    }
-                </tr>
-              </thead>
-                {
-                  rows.map((row) => (
-                    <tbody key={row._id}>
-                      <tr className="border-b font-semibold delay-75 transition bg-gray-900 border-gray-700 hover:bg-[#1f2937ea] hover:text-indigo-500">
-                        <th scope="row" className="px-6 py-4 font-mediumwhitespace-nowrap text-indigo-500">
-                            {row.name}
-                        </th>
-                        <td className="px-6 py-4">
-                            {row.description}
-                        </td>
-                        <td className="px-6 py-4">
-                            {row.type}
-                        </td>
-                        <td className="px-6 py-4">
-                            {row.place}
-                        </td>
-                        <td className="px-6 py-4">
-                            {row.price}
-                        </td>
-                        <td className="px-5 py-4 flex mx-auto text-[1.5em]">
-                          <button onClick={() => setOpenModal(true)} className="hover:text-slate-100 mr-1"><TaskActions value={row}/></button>
-                          <button 
-                            className="hover:text-slate-100"
-                            onClick={() => removeTask(row._id)}
-                          ><MdOutlineDelete/></button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  ))
-                }
-            </table>
-            <nav className="flex items-center justify-between pt-4 mx-auto px-3 py-2 bg-gray-900" aria-label="Table navigation">
-              <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span className="font-semibold text-gray-900 dark:text-white">1-10</span> of <span className="font-semibold text-gray-900 dark:text-white">1000</span></span>
-              <ul className="inline-flex -space-x-px text-sm h-8">
-                  <li>
-                      <a href="#" className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                  </li>
-                  <li>
-                      <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                  </li>
-                  <li>
-                      <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                  </li>
-                  <li>
-                      <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                  </li>
-              </ul>
-          </nav>
-        </div>
+        {/* invesments */}
+        <Accordion expanded={expanded === "panel1"} onChange={handleChange("panel1")}>
+          <AccordionSummary>
+            <div className="flex flex-wrap items-center justify-around">
+              <span>Inversiones</span> <div className="bg-[#57F28F] w-[1.2em] h-[0.5em] rounded-xl ml-2"></div>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div className="relative overflow-x-auto shadow-2xl sm:rounded-lg mx-auto table-scroll">
+              <table className="w-full text-sm text-left text-slate-600 dark:text-gray-600">
+                <thead className="text-xs text-gray-600 uppercase bg-[#A5B4FC]">
+                  <tr>
+                      {
+                        columns.map((col) => (
+                          <th scope="col" className="px-6 py-3" key={Math.random()}>
+                            {col.field}
+                          </th>
+                        ))
+                      }
+                  </tr>
+                </thead>
+                <tbody className="bg-indigo-200">
+                  {
+                    investment.length
+                      ? (
+                        investment.map((row) => {
+                            return (
+                              <tr key={Math.random()} 
+                                className={
+                                  `border-b font-semibold delay-75 h-[90px] transition border-gray-400 bg-slate-300 ${
+                                    moment(Date.now()) >= moment(row.dateTo)
+                                      ? (`hover:bg-green-200 hover:bg-opacity-75`)
+                                      : (`hover:bg-yellow-200 hover:bg-opacity-75`)
+                                  }`
+                                }
+                              >
+                                <th scope="row" className="px-6 py-4 font-mediumwhitespace-nowrap text-indigo-500" key={Math.random()}>
+                                    {row.name}
+                                </th>
+                                <td className="px-6 py-4" key={Math.random()}>
+                                    {row.type}
+                                </td>
+                                <td className="px-6 py-4" key={Math.random()}>
+                                    ${row.price}
+                                </td>
+                                <td className="px-6 py-4" key={Math.random()}>
+                                    <span className="flex justify-start">{row.description}</span>
+                                    <span className="flex justify-start">-----</span>
+                                    <span className="flex justify-start">
+                                      {
+                                        row.currency === "USD" 
+                                          ? (`$${Math.round((+row.description.split("%")[0]/100 * row.price) + row.price)}`) 
+                                          : (`Bs.${Math.round((+row.description.split("%")[0]/100 * row.price) + row.price)}`)
+                                      }
+                                    </span>
+                                </td>
+                                <td className="px-6 py-4 text-center justify-between" key={Math.random()}>
+                                  <span className="flex justify-start">
+                                    {`${moment(row.dateFrom).format("DD-MMM-YY")}`}
+                                  </span>
+                                  <span className="flex justify-start"> --------- </span>
+                                  <span className="flex justify-start">
+                                    {`${moment(row.dateTo).format("DD-MMM-YY")}`}
+                                  </span>
+                                </td>
+                                <td className="px-5 py-4 flex flex-wrap mx-auto text-[1.5em] items-center mt-3" key={Math.random()}>
+                                  <div className="mt-1">
+                                    <TasksUpdate value={row}/>
+                                  </div>
+                                  <button 
+                                    className="hover:text-indigo-500 mx-auto"
+                                    onClick={() => removeTask(row._id)}
+                                  ><MdOutlineDelete/></button>
+                                </td>
+                              </tr>
+                            )
+                        })
+                      ) : (
+                        <tr className="border-b font-semibold delay-75 transition bg-slate-300 border-gray-400 hover:bg-[#cbd5e1de] hover:text-indigo-500">
+                              <th scope="row" className="px-6 py-4 font-mediumwhitespace-nowrap text-indigo-500" key={Math.random()}>
+                                  "N/A"
+                              </th>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-5 py-4 flex flex-wrap mx-auto text-[1.5em] items-center justify-start" key={Math.random()}>
+                                <div className="">
+                                  <MdOutlineBlock/>
+                                </div>
+                                <button 
+                                  className="hover:text-slate-100 mx-auto"
+                                ><MdOutlineBlock/></button>
+                              </td>
+                            </tr>
+                      )
+                  }
+                </tbody>
+              </table>
+            </div>
+          </AccordionDetails>
+        </Accordion>
+        {/* deposit */}
+        <Accordion expanded={expanded === "panel2"} onChange={handleChange("panel2")}>
+          <AccordionSummary>
+            <div className="flex flex-wrap items-center justify-around">
+              <span>Depositos</span> <div className="bg-[#F2807C] w-[1.2em] h-[0.5em] rounded-xl ml-2"></div>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div className="relative overflow-x-auto shadow-2xl sm:rounded-lg mx-auto table-scroll">
+              <table className="w-full text-sm text-left text-slate-600 dark:text-gray-600">
+                <thead className="text-xs text-gray-600 uppercase bg-[#A5B4FC]">
+                  <tr>
+                      {
+                        columns.map((col) => (
+                          <th scope="col" className="px-6 py-3" key={Math.random()}>
+                            {col.field}
+                          </th>
+                        ))
+                      }
+                  </tr>
+                </thead>
+                <tbody className="bg-indigo-200">
+                  {
+                    deposit.length
+                      ? (
+                        deposit.map((row) => {
+                            return (
+                              <tr key={Math.random()} 
+                                className={
+                                  `border-b font-semibold delay-75 h-[90px] transition border-gray-400 bg-slate-300 ${
+                                    moment(Date.now()) >= moment(row.dateTo)
+                                      ? (`hover:bg-green-200 hover:bg-opacity-75`)
+                                      : (`hover:bg-yellow-200 hover:bg-opacity-75`)
+                                  }`
+                                }
+                              >
+                                <th scope="row" className="px-6 py-4 font-mediumwhitespace-nowrap text-indigo-500" key={Math.random()}>
+                                    {row.name}
+                                </th>
+                                <td className="px-6 py-4" key={Math.random()}>
+                                    {row.type}
+                                </td>
+                                <td className="px-6 py-4" key={Math.random()}>
+                                    ${row.price}
+                                </td>
+                                <td className="px-6 py-4" key={Math.random()}>
+                                    <span className="flex justify-start">{row.description}</span>
+                                    <span className="flex justify-start">-----</span>
+                                    <span className="flex justify-start">
+                                      {
+                                        row.currency === "USD" 
+                                          ? (`$${Math.round((+row.description.split("%")[0]/100 * row.price) + row.price)}`) 
+                                          : (`Bs.${Math.round((+row.description.split("%")[0]/100 * row.price) + row.price)}`)
+                                      }
+                                    </span>
+                                </td>
+                                <td className="px-6 py-4 text-center justify-between" key={Math.random()}>
+                                  <span className="flex justify-start">
+                                    {`${moment(row.dateFrom).format("DD-MMM-YY")}`}
+                                  </span>
+                                  <span className="flex justify-start"> --------- </span>
+                                  <span className="flex justify-start">
+                                    {`${moment(row.dateTo).format("DD-MMM-YY")}`}
+                                  </span>
+                                </td>
+                                <td className="px-5 py-4 flex flex-wrap mx-auto text-[1.5em] items-center mt-3" key={Math.random()}>
+                                  <div className="mt-1">
+                                    <TasksUpdate value={row}/>
+                                  </div>
+                                  <button 
+                                    className="hover:text-indigo-500 mx-auto"
+                                    onClick={() => removeTask(row._id)}
+                                  ><MdOutlineDelete/></button>
+                                </td>
+                              </tr>
+                            )
+                        })
+                      ) : (
+                        <tr className="border-b font-semibold delay-75 transition bg-slate-300 border-gray-400 hover:bg-[#cbd5e1de] hover:text-indigo-500">
+                              <th scope="row" className="px-6 py-4 font-mediumwhitespace-nowrap text-indigo-500" key={Math.random()}>
+                                  "N/A"
+                              </th>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-5 py-4 flex flex-wrap mx-auto text-[1.5em] items-center justify-start" key={Math.random()}>
+                                <div className="">
+                                  <MdOutlineBlock/>
+                                </div>
+                                <button 
+                                  className="hover:text-slate-100 mx-auto"
+                                ><MdOutlineBlock/></button>
+                              </td>
+                            </tr>
+                      )
+                  }
+                </tbody>
+              </table>
+            </div>
+          </AccordionDetails>
+        </Accordion>
+        {/* withdrawal */}
+        <Accordion expanded={expanded === "panel3"} onChange={handleChange("panel3")}>
+          <AccordionSummary>
+            <div className="flex flex-wrap items-center justify-around">
+              <span>Retiros</span> <div className="bg-[#EAF24B] w-[1.2em] h-[0.5em] rounded-xl ml-2"></div>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div className="relative overflow-x-auto shadow-2xl sm:rounded-lg mx-auto table-scroll">
+              <table className="w-full text-sm text-left text-slate-600 dark:text-gray-600">
+                <thead className="text-xs text-gray-600 uppercase bg-[#A5B4FC]">
+                  <tr>
+                      {
+                        columns.map((col) => (
+                          <th scope="col" className="px-6 py-3" key={Math.random()}>
+                            {col.field}
+                          </th>
+                        ))
+                      }
+                  </tr>
+                </thead>
+                <tbody className="bg-indigo-200">
+                  {
+                    withdrawal.length
+                      ? (
+                        withdrawal.map((row) => {
+                            return (
+                              <tr key={Math.random()} 
+                                className={
+                                  `border-b font-semibold delay-75 h-[90px] transition border-gray-400 bg-slate-300 ${
+                                    moment(Date.now()) >= moment(row.dateTo)
+                                      ? (`hover:bg-green-200 hover:bg-opacity-75`)
+                                      : (`hover:bg-yellow-200 hover:bg-opacity-75`)
+                                  }`
+                                }
+                              >
+                                <th scope="row" className="px-6 py-4 font-mediumwhitespace-nowrap text-indigo-500" key={Math.random()}>
+                                    {row.name}
+                                </th>
+                                <td className="px-6 py-4" key={Math.random()}>
+                                    {row.type}
+                                </td>
+                                <td className="px-6 py-4" key={Math.random()}>
+                                    ${row.price}
+                                </td>
+                                <td className="px-6 py-4" key={Math.random()}>
+                                    <span className="flex justify-start">{row.description}</span>
+                                    <span className="flex justify-start">-----</span>
+                                    <span className="flex justify-start">
+                                      {
+                                        row.currency === "USD" 
+                                          ? (`$${Math.round((+row.description.split("%")[0]/100 * row.price) + row.price)}`) 
+                                          : (`Bs.${Math.round((+row.description.split("%")[0]/100 * row.price) + row.price)}`)
+                                      }
+                                    </span>
+                                </td>
+                                <td className="px-6 py-4 text-center justify-between" key={Math.random()}>
+                                  <span className="flex justify-start">
+                                    {`${moment(row.dateFrom).format("DD-MMM-YY")}`}
+                                  </span>
+                                  <span className="flex justify-start"> --------- </span>
+                                  <span className="flex justify-start">
+                                    {`${moment(row.dateTo).format("DD-MMM-YY")}`}
+                                  </span>
+                                </td>
+                                <td className="px-5 py-4 flex flex-wrap mx-auto text-[1.5em] items-center mt-3" key={Math.random()}>
+                                  <div className="mt-1">
+                                    <TasksUpdate value={row}/>
+                                  </div>
+                                  <button 
+                                    className="hover:text-indigo-500 mx-auto"
+                                    onClick={() => removeTask(row._id)}
+                                  ><MdOutlineDelete/></button>
+                                </td>
+                              </tr>
+                            )
+                        })
+                      ) : (
+                        <tr className="border-b font-semibold delay-75 transition bg-slate-300 border-gray-400 hover:bg-[#cbd5e1de] hover:text-indigo-500">
+                              <th scope="row" className="px-6 py-4 font-mediumwhitespace-nowrap text-indigo-500" key={Math.random()}>
+                                  "N/A"
+                              </th>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-6 py-4" key={Math.random()}>
+                                  "N/A"
+                              </td>
+                              <td className="px-5 py-4 flex flex-wrap mx-auto text-[1.5em] items-center justify-start" key={Math.random()}>
+                                <div className="">
+                                  <MdOutlineBlock/>
+                                </div>
+                                <button 
+                                  className="hover:text-slate-100 mx-auto"
+                                ><MdOutlineBlock/></button>
+                              </td>
+                            </tr>
+                      )
+                  }
+                </tbody>
+              </table>
+            </div>
+          </AccordionDetails>
+        </Accordion>
       </div>
-
     </>
   )
 }

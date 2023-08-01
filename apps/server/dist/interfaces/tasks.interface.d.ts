@@ -5,7 +5,9 @@ export interface IUser {
     description: string;
     type: string;
     price: number;
-    place: string;
+    currency: string;
+    dateFrom: Date;
+    dateTo: Date;
     userId?: Types.ObjectId;
     createdAt?: Date;
     updatedAt?: Date;

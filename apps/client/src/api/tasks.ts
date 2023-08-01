@@ -1,4 +1,4 @@
-import { Task } from "../interfaces/tasks.interface";
+import { CreateTask, Task } from "../components/common/interfaces/tasks.interface";
 
 const API = `http://localhost:9999/tasks`
 export const getAllTask = async () => {
@@ -8,14 +8,15 @@ export const getAllTask = async () => {
   
 }
 
-export const addTask = async (task: Task) => 
-  await fetch(`${API}/create`, {
+export const addTask = async (task: CreateTask) => {
+  return await fetch(`${API}/create`, {
     method: 'POST',
     body: JSON.stringify(task),
     headers: {
       'Content-Type': 'application/json'
     }
   })
+}
 
 export const editTask = async (task: Task, id: string) => 
   await fetch(`${API}/update/${id}`, {

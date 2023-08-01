@@ -2,20 +2,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { createContext, useEffect, useState } from "react";
-import { Task } from "../../interfaces/tasks.interface";
+import { CreateTask, GroupedTypeTasks, Task } from "../../components/common/interfaces/tasks.interface";
 import { addTask, getAllTask, editTask, deleteTask } from "../../api/tasks";
 import { useUser } from "../users/useUser";
+import moment from "moment";
 
 interface TaskContextValue {
   tasksList: Task[],
-  createTask: (userId: string, task: Task) => Promise<void>
+  getUserTask:() => Task[],
+  createTask: (task: CreateTask) => Promise<void>
   updateTask: (task: Task, id: string) => Promise<void>
   removeTask: (id: string) => Promise<void>
 }
 
 export const TasksContext = createContext<TaskContextValue>({
   tasksList: [],
-  createTask: async (_userId: string, _task: Task) => {},
+  getUserTask:() => [],
+  createTask: async (_task: CreateTask) => {},
   updateTask: async (_task: Task, _id: string) => {},
   removeTask: async (_id: string) => {}
 })
@@ -27,15 +30,6 @@ interface Props {
 export const TasksProvider: React.FC<Props> = ({children}) => {
   const {currentUser} = useUser()
   const [tasksList, setTasksList] = useState<Task[]>([])
-  // const [currentTask, setCurrentTask] = useState<CurrentTask>({
-  //   _id: '', 
-  //   name: '',
-  //   description: '',
-  //   type: '',
-  //   place: '',
-  //   price: 0,
-  //   userId: ''
-  // })
 
   useEffect(() => {
     getAllTask()
@@ -44,11 +38,21 @@ export const TasksProvider: React.FC<Props> = ({children}) => {
       })
   }, [])
 
-  const createTask = async (userId: string, task: Task) => {
-    const res = await addTask({...task, _id: userId})
-    const data: Task = await res.json()
-    setTasksList([...tasksList, data])
+  const getUserTask = () => 
+    tasksList.filter((task) => task.userId === currentUser._id)
+  
+
+  const createTask = async (task: CreateTask) => {
+    if (currentUser._id) {
+      const res = await addTask({...task, userId: currentUser._id})
+      const data: Task = await res.json()
+      setTasksList([...tasksList, data])
+    } else {
+      throw new Error("Por favor inicia sesion");
+      
+    }
   }
+  
 
   const updateTask = async (task:Task, id: string) => {
     const res = await editTask(task, id)
@@ -63,7 +67,7 @@ export const TasksProvider: React.FC<Props> = ({children}) => {
   }
 
   return(
-    <TasksContext.Provider value={{tasksList, createTask, updateTask, removeTask}}>
+    <TasksContext.Provider value={{tasksList, getUserTask, createTask, updateTask, removeTask}}>
       {children}
     </TasksContext.Provider>
   )

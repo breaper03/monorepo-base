@@ -27,12 +27,20 @@ __decorate([
 ], Tasks.prototype, "type", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ trim: true, required: true }),
-    __metadata("design:type", String)
-], Tasks.prototype, "place", void 0);
-__decorate([
-    (0, mongoose_1.Prop)({ trim: true, required: true }),
     __metadata("design:type", Number)
 ], Tasks.prototype, "price", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ trim: true, required: true }),
+    __metadata("design:type", String)
+], Tasks.prototype, "currency", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ trim: true, required: true }),
+    __metadata("design:type", Date)
+], Tasks.prototype, "dateFrom", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ trim: true, required: true }),
+    __metadata("design:type", Date)
+], Tasks.prototype, "dateTo", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ trim: true, required: true }),
     __metadata("design:type", String)

@@ -1,4 +1,4 @@
-import { IsString, MinLength, IsOptional, IsNumber } from "@nestjs/class-validator";
+import { IsString, MinLength, IsOptional, IsNumber, IsDate } from "@nestjs/class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 import { Types } from "mongoose";
 export class CreateTaskDto {
@@ -21,10 +21,17 @@ export class CreateTaskDto {
     price: number
 
     @IsString()
-    @IsOptional()
     @MinLength(3)
     @ApiProperty({type: String})
-    place?: string
+    currency: string
+
+    @IsDate()
+    @ApiProperty({type: Date})
+    dateFrom: Date
+    
+    @IsDate()
+    @ApiProperty({type: Date})
+    dateTo: Date
 
     @IsString()
     @ApiProperty({type: String})
@@ -53,10 +60,17 @@ export class UpdateTaskDto {
     price?: number
 
     @IsString()
-    @IsOptional()
     @MinLength(3)
     @ApiProperty({type: String})
-    place?: string
+    currency?: string
+
+    @IsDate()
+    @ApiProperty({type: Date})
+    dateFrom?: Date
+    
+    @IsDate()
+    @ApiProperty({type: Date})
+    dateTo?: Date
 
     @IsString()
     @IsOptional()
